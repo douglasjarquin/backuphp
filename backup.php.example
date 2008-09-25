@@ -1,0 +1,20 @@
+<?php
+// AWS access info
+define('awsAccessKey', '');
+define('awsSecretKey', '');
+
+// Backup bucket
+$BACKUP_BUCKET = 'bucket_name';
+
+// MySQL variables
+$MYSQL_OPTIONS = '--quote-names --quick --add-drop-table --add-locks --allow-keywords --disable-keys --extended-insert --single-transaction --create-options --comments --net_buffer_length=16384';
+
+// Load the app functions
+include('functions.php');
+
+// Syntax: hostname, username, password, prefix
+backupDBs('localhost', 'root', 'password', 'backup');
+
+// Syntax: array of paths, prefix
+backupFiles(array('/home/douglas/swordsmen'),'backup');
+?>
