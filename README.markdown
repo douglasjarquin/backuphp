@@ -16,15 +16,14 @@ A fork of the [phpBackupS3](http://github.com/ianneub/php_backup_s3/) by [Ian](h
 4. Upload all files to your server.
 5. Setup a cron job to run the backups for you!
 
-For example, create a file called /etc/cron.daily/backup and add this code to it:
+For example, add this cron job to your crontab:
+    
+    # Backup server everyday at 3am
+    0 3 * * * php -q /path/to/backuphp/backup.php
 
-    #!/bin/bash
-    /usr/bin/php /path/to/script/backup.php
-    exit 0
+Open your crontab by using this command:
 
-NOTE: Make sure to set the /etc/cron.daily/backup file to be executable. Like this:
-
-    chmod +x /etc/cron.daily/backup
+    crontab -e
 
 ## About this script
 

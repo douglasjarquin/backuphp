@@ -1,5 +1,0 @@
-#!/bin/bash
-
-# Bash script to run the backup
-/usr/bin/php /home/user/backuphp/backup.php
-exit 0
