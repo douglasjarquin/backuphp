@@ -9,6 +9,9 @@ $BACKUP_BUCKET = 'bucket_name';
 // MySQL variables
 $MYSQL_OPTIONS = '--quote-names --quick --add-drop-table --add-locks --allow-keywords --disable-keys --extended-insert --single-transaction --create-options --comments --net_buffer_length=16384';
 
+// Set the include paths
+ini_set("include_path", "/path/to/backuphp/");
+
 // Load the app functions
 include('functions.php');
 
