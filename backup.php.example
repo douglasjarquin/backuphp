@@ -13,11 +13,11 @@ $MYSQL_OPTIONS = '--quote-names --quick --add-drop-table --add-locks --allow-key
 ini_set("include_path", "/path/to/backuphp/");
 
 // Load the app functions
-include('functions.php');
+include('app/functions.php');
 
-// Syntax: hostname, username, password, prefix
+// Syntax: hostname, username, password, server_name
 backupDBs('localhost', 'root', 'password', 'backup');
 
-// Syntax: array of paths, prefix
+// Syntax: array of paths, server_name
 backupFiles(array('/home/douglas/swordsmen'),'backup');
 ?>
