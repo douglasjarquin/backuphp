@@ -19,13 +19,13 @@ function backupFiles($targets, $prefix = '') {
     // compress local files
     # FIXME Create bzip files in the tmp directory
     $cleanTarget = urlencode($target);
-    `tar cjf tmp/$prefix-$cleanTarget.tar.bz2 $target`;
+    `tar cjf $prefix-$cleanTarget.tar.bz2 $target`;
  
     // upload to s3
-    $s3->putObjectFile("tmp/$prefix-$cleanTarget.tar.bz2", $BACKUP_BUCKET, s3Path($prefix, $target.".tar.bz2"));
+    $s3->putObjectFile("$prefix-$cleanTarget.tar.bz2", $BACKUP_BUCKET, s3Path($prefix, $target.".tar.bz2"));
     
     // remove temp file
-    `rm -rf tmp/$prefix-$cleanTarget.tar.bz2`;
+    `rm -rf $prefix-$cleanTarget.tar.bz2`;
   }
 }
 
@@ -56,12 +56,12 @@ function backupDBs($hostname, $username, $password, $prefix = '') {
 
   // Run backups on each database in the array
   foreach ($databases as $database) {
-    `/usr/bin/mysqldump $MYSQL_OPTIONS --no-data --host=$hostname --user=$username --password='$password' $database | bzip2  > tmp/$database-structure.sql.bz2`;
-    `/usr/bin/mysqldump $MYSQL_OPTIONS --host=$hostname --user=$username --password='$password' $database | bzip2 > tmp/$database-data.sql.bz2`;
-    $s3->putObjectFile("tmp/$database-structure.sql.bz2", $BACKUP_BUCKET, s3Path($prefix,"/".$database."-structure.sql.bz2"));
-    $s3->putObjectFile("tmp/$database-data.sql.bz2", $BACKUP_BUCKET, s3Path($prefix,"/".$database."-data.sql.bz2"));
+    `/usr/bin/mysqldump $MYSQL_OPTIONS --no-data --host=$hostname --user=$username --password='$password' $database | bzip2  > $database-structure.sql.bz2`;
+    `/usr/bin/mysqldump $MYSQL_OPTIONS --host=$hostname --user=$username --password='$password' $database | bzip2 > $database-data.sql.bz2`;
+    $s3->putObjectFile("$database-structure.sql.bz2", $BACKUP_BUCKET, s3Path($prefix,"/".$database."-structure.sql.bz2"));
+    $s3->putObjectFile("$database-data.sql.bz2", $BACKUP_BUCKET, s3Path($prefix,"/".$database."-data.sql.bz2"));
 
-    `rm -rf tmp/$database-structure.sql.bz2 tmp/$database-data.sql.bz2`;
+    `rm -rf $database-structure.sql.bz2 $database-data.sql.bz2`;
   }
 
 }
