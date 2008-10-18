@@ -17,7 +17,6 @@ function backupFiles($targets, $prefix = '') {
 
   foreach ($targets as $target) {
     // compress local files
-    # FIXME Create bzip files in the tmp directory
     $cleanTarget = urlencode($target);
     `tar cjf $prefix-$cleanTarget.tar.bz2 $target`;
  
