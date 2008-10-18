@@ -17,7 +17,7 @@ A fork of the [phpBackupS3](http://github.com/ianneub/php_backup_s3/) by [Ian](h
 5. Setup a cron job to run the backups for you!
 
 For example, add this cron job to your crontab:
-    
+
     # Backup server everyday at 3am
     0 3 * * * php -q /path/to/backuphp/backup.php
 
