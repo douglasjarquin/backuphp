@@ -1,0 +1,4 @@
+#!/bin/sh
+
+php -q /home/douglas/backuphp/backup.php
+exit 0

@@ -9,6 +9,13 @@ A fork of the [phpBackupS3](http://github.com/ianneub/php_backup_s3/) by [Ian](h
 * Written in PHP (Yes, this is a feature)
 * Removes old backups according to a [grandfather-father-son](http://en.wikipedia.org/wiki/Grandfather-Father-Son_Backup) based schedule
 
+## Requirements
+
+* PHP 5 or higher
+* [PHP curl](http://php.net/manual/en/intro.curl.php)
+* [PHP mysql](http://php.net/mysql)
+* GNU/Linux environment
+
 ## Installation
 
 1. Rename backup.php.example to backup.php.
@@ -16,14 +23,12 @@ A fork of the [phpBackupS3](http://github.com/ianneub/php_backup_s3/) by [Ian](h
 4. Upload all files to your server.
 5. Setup a cron job to run the backups for you!
 
-For example, add this cron job to your crontab:
+For example, add a "backup" cron to your cron.daily:
 
-    # Backup server everyday at 3am
-    0 3 * * * php -q /path/to/backuphp/backup.php
+    #!/bin/sh
 
-Open your crontab by using this command:
-
-    crontab -e
+    php -q /home/douglas/backuphp/backup.php
+    exit 0
 
 ## About this script
 
@@ -47,10 +52,3 @@ This allows you to keep a very detailed history of your files during the most re
 To disable this feature, comment out the following line from functions.php:
 
     deleteBackups($BACKUP_BUCKET);
-
-### Requirements
-
-* PHP 5 or higher
-* [PHP curl](http://php.net/manual/en/intro.curl.php)
-* [PHP mysql](http://php.net/mysql)
-* GNU/Linux environment
