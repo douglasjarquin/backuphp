@@ -1,4 +1,8 @@
 <?php
+
+// Can't just kill the script
+set_time_limit(0);
+
 // Load the standalone S3 class
 require_once('vendor/s3.php');
 

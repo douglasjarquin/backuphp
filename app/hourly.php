@@ -1,9 +1,13 @@
 <?php
+
+// Can't just kill the script
+set_time_limit(0);
+
 // Load the standalone S3 class
 require_once('vendor/s3.php');
 
 // Setup S3 class
-$s3 = new S3(awsAccessKey, awsSecretKey);
+$s3 = new S3(awsAccessKey, awsSecretKey, false);
 
 // Delete old backups on the Grandfather-Father-Son schedule
 deleteBackups($BACKUP_BUCKET);
