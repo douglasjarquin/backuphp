@@ -129,7 +129,7 @@ function s3Path($prefix, $name, $timestamp = null) {
 
   $date = date("Y/m/d/H/", $timestamp);
 
-  return $date.$prefix.$name;
+  return $prefix.$date.$name;
 }
 
 ?>
