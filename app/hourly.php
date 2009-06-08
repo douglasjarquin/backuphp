@@ -106,7 +106,7 @@ function deleteBackups($bucket) {
   $set_date = strtotime('-2 days');
 
   // Only if it wasn't the first, or Saturday, or 6pm.
-  if ((int)date('j', $set_date) === 1 || (string)date('l',$set_date) === "Saturday") || (int)date('H',$set_date) === 18) return true;
+  if ((int)date('j', $set_date) === 1 || (string)date('l',$set_date) === "Saturday" || (int)date('H',$set_date) === 18) return true;
 
   // Set s3 "dir" to delete
   $prefix = s3Path('', '', $set_date);
