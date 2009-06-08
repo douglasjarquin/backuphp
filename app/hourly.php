@@ -88,7 +88,7 @@ function deleteBackups($bucket) {
   // Delete the backup from 2 weeks ago
   $set_date = strtotime('-2 weeks');
 
-  // Only if it wasn't a saturday or the 1st
+  // Only if it wasn't the first, or a Saturday.
   if ((int)date('j', $set_date) === 1 || (string)date('l',$set_date) === "Saturday") return true;
 
   // Set s3 "dir" to delete
@@ -102,12 +102,28 @@ function deleteBackups($bucket) {
     $s3->deleteObject($bucket, $key);
   }
 
+  // Delete the backup from 2 days ago
+  $set_date = strtotime('-2 days');
+
+  // Only if it wasn't the first, or Saturday, or 6pm.
+  if ((int)date('j', $set_date) === 1 || (string)date('l',$set_date) === "Saturday") || (int)date('H',$set_date) === 18) return true;
+
+  // Set s3 "dir" to delete
+  $prefix = s3Path('', '', $set_date);
+
+  // Find files to delete
+  $keys = $s3->getBucket($bucket, $prefix);
+
+  // Delete each key found
+  foreach ($keys as $key => $meta) {
+    $s3->deleteObject($bucket, $key);
+  }
 }
 
 function s3Path($prefix, $name, $timestamp = null) {
   if (is_null($timestamp)) $timestamp = time();
 
-  $date = date("Y/m/d/", $timestamp);
+  $date = date("Y/m/d/H/", $timestamp);
 
   return $date.$prefix.$name;
 }
