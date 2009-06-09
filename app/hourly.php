@@ -127,9 +127,9 @@ function deleteBackups($bucket) {
 function s3Path($prefix, $name, $timestamp = null) {
   if (is_null($timestamp)) $timestamp = time();
 
-  $date = date("Y/m/d/H/", $timestamp);
+  $date = date("Y/m/d/H", $timestamp);
 
-  return $date.$prefix.$name;
+  return $prefix.'/'.$date.$name;
 }
 
 ?>
