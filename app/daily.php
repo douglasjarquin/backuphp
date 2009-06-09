@@ -59,12 +59,14 @@ function backupDBs($hostname, $username, $password, $prefix = '') {
 
   // Run backups on each database in the array
   foreach ($databases as $database) {
-    `mysqldump $MYSQL_OPTIONS --no-data --host=$hostname --user=$username --password='$password' $database | bzip2  > $database.'_structure.sql.bz2'`;
-    `mysqldump $MYSQL_OPTIONS --host=$hostname --user=$username --password='$password' $database | bzip2 > $database.'_content.sql.bz2'`;
-    $s3->putObjectFile("$database.'_structure.sql.bz2'", $BACKUP_BUCKET, s3Path($prefix,"/".$database."_structure.sql.bz2"));
-    $s3->putObjectFile("$database.'_content.sql.bz2'", $BACKUP_BUCKET, s3Path($prefix,"/".$database."_content.sql.bz2"));
+     $structure = $database . '_structure';
+     $content = $database . '_content';
+    `mysqldump $MYSQL_OPTIONS --no-data --host=$hostname --user=$username --password='$password' $database | bzip2  > $structure.sql.bz2`;
+    `mysqldump $MYSQL_OPTIONS --host=$hostname --user=$username --password='$password' $database | bzip2 > $content.sql.bz2`;
+    $s3->putObjectFile("$structure.sql.bz2", $BACKUP_BUCKET, s3Path($prefix, "/" . $database . "_structure.sql.bz2"));
+    $s3->putObjectFile("$content.sql.bz2", $BACKUP_BUCKET, s3Path($prefix, "/" . $database . "_content.sql.bz2"));
 
-    `rm -rf $database.'_structure.sql.bz2' $database.'_content.sql.bz2'`;
+    `rm -rf $structure.sql.bz2 $content.sql.bz2`;
   }
 
 }
@@ -93,7 +95,7 @@ function deleteBackups($bucket) {
   $set_date = strtotime('-2 weeks');
 
   // Only if it wasn't the first, or a Saturday.
-  if ((int)date('j', $set_date) === 1 || (string)date('l',$set_date) === "Saturday") return true;
+  if ((int)date('j', $set_date) === 1 || (string)date('l', $set_date) === "Saturday") return true;
 
   // Set s3 "dir" to delete
   $prefix = s3Path('', '', $set_date);
