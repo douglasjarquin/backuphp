@@ -59,7 +59,7 @@ function backupDBs($hostname, $username, $password, $prefix = '') {
 
   // Run backups on each database in the array
   foreach ($databases as $database) {
-    `mysqldump $MYSQL_OPTIONS --no_content --host=$hostname --user=$username --password='$password' $database | bzip2  > $database_structure.sql.bz2`;
+    `mysqldump $MYSQL_OPTIONS --no-data --host=$hostname --user=$username --password='$password' $database | bzip2  > $database_structure.sql.bz2`;
     `mysqldump $MYSQL_OPTIONS --host=$hostname --user=$username --password='$password' $database | bzip2 > $database_content.sql.bz2`;
     $s3->putObjectFile("$database_structure.sql.bz2", $BACKUP_BUCKET, s3Path($prefix,"/".$database."_structure.sql.bz2"));
     $s3->putObjectFile("$database_content.sql.bz2", $BACKUP_BUCKET, s3Path($prefix,"/".$database."_content.sql.bz2"));
