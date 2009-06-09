@@ -22,13 +22,13 @@ function backupFiles($targets, $prefix = '') {
   foreach ($targets as $target) {
     // compress local files
     $cleanTarget = urlencode($target);
-    `tar cjf $prefix-$cleanTarget.tar.bz2 $target`;
- 
+    `tar cjf $prefix-$cleanTarget.bz2 $target`;
+
     // upload to s3
-    $s3->putObjectFile("$prefix-$cleanTarget.tar.bz2", $BACKUP_BUCKET, s3Path($prefix, $target.".tar.bz2"));
+    $s3->putObjectFile("$prefix-$cleanTarget.bz2", $BACKUP_BUCKET, s3Path($prefix, $target.".bz2"));
     
     // remove temp file
-    `rm -rf $prefix-$cleanTarget.tar.bz2`;
+    `rm -rf $prefix-$cleanTarget.bz2`;
   }
 }
 
@@ -59,12 +59,12 @@ function backupDBs($hostname, $username, $password, $prefix = '') {
 
   // Run backups on each database in the array
   foreach ($databases as $database) {
-    `mysqldump $MYSQL_OPTIONS --no-data --host=$hostname --user=$username --password='$password' $database | bzip2  > $database-structure.sql.bz2`;
-    `mysqldump $MYSQL_OPTIONS --host=$hostname --user=$username --password='$password' $database | bzip2 > $database-data.sql.bz2`;
-    $s3->putObjectFile("$database-structure.sql.bz2", $BACKUP_BUCKET, s3Path($prefix,"/".$database."-structure.sql.bz2"));
-    $s3->putObjectFile("$database-data.sql.bz2", $BACKUP_BUCKET, s3Path($prefix,"/".$database."-data.sql.bz2"));
+    `mysqldump $MYSQL_OPTIONS --no_content --host=$hostname --user=$username --password='$password' $database | bzip2  > $database_structure.sql.bz2`;
+    `mysqldump $MYSQL_OPTIONS --host=$hostname --user=$username --password='$password' $database | bzip2 > $database_content.sql.bz2`;
+    $s3->putObjectFile("$database_structure.sql.bz2", $BACKUP_BUCKET, s3Path($prefix,"/".$database."_structure.sql.bz2"));
+    $s3->putObjectFile("$database_content.sql.bz2", $BACKUP_BUCKET, s3Path($prefix,"/".$database."_content.sql.bz2"));
 
-    `rm -rf $database-structure.sql.bz2 $database-data.sql.bz2`;
+    `rm -rf $database_structure.sql.bz2 $database_content.sql.bz2`;
   }
 
 }
@@ -111,7 +111,7 @@ function deleteBackups($bucket) {
 function s3Path($prefix, $name, $timestamp = null) {
   if (is_null($timestamp)) $timestamp = time();
 
-  $date = date("Y/m/d/", $timestamp);
+  $date = date("/Y/m/d/", $timestamp);
 
   return $prefix.$date.$name;
 }
