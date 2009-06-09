@@ -59,12 +59,12 @@ function backupDBs($hostname, $username, $password, $prefix = '') {
 
   // Run backups on each database in the array
   foreach ($databases as $database) {
-    `mysqldump $MYSQL_OPTIONS --no-data --host=$hostname --user=$username --password='$password' $database | bzip2  > $database-structure.sql.bz2`;
-    `mysqldump $MYSQL_OPTIONS --host=$hostname --user=$username --password='$password' $database | bzip2 > $database-data.sql.bz2`;
-    $s3->putObjectFile("$database-structure.sql.bz2", $BACKUP_BUCKET, s3Path($prefix,"/".$database."-structure.sql.bz2"));
-    $s3->putObjectFile("$database-data.sql.bz2", $BACKUP_BUCKET, s3Path($prefix,"/".$database."-data.sql.bz2"));
+    `mysqldump $MYSQL_OPTIONS --no-data --host=$hostname --user=$username --password='$password' $database | bzip2  > $database_structure.sql.bz2`;
+    `mysqldump $MYSQL_OPTIONS --host=$hostname --user=$username --password='$password' $database | bzip2 > $database_content.sql.bz2`;
+    $s3->putObjectFile("$database_structure.sql.bz2", $BACKUP_BUCKET, s3Path($prefix,"/".$database."_structure.sql.bz2"));
+    $s3->putObjectFile("$database_content.sql.bz2", $BACKUP_BUCKET, s3Path($prefix,"/".$database."_content.sql.bz2"));
 
-    `rm -rf $database-structure.sql.bz2 $database-data.sql.bz2`;
+    `rm -rf $database_structure.sql.bz2 $database_content.sql.bz2`;
   }
 
 }
