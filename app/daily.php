@@ -22,13 +22,13 @@ function backupFiles($targets, $prefix = '') {
   foreach ($targets as $target) {
     // compress local files
     $cleanTarget = urlencode($target);
-    `tar cjf $prefix-$cleanTarget.tar.bz2 $target`;
+    `tar cjf $prefix-$cleanTarget.bz2 $target`;
 
     // upload to s3
-    $s3->putObjectFile("$prefix-$cleanTarget.tar.bz2", $BACKUP_BUCKET, s3Path($prefix, $target.".tar.bz2"));
+    $s3->putObjectFile("$prefix-$cleanTarget.bz2", $BACKUP_BUCKET, s3Path($prefix, $target.".bz2"));
     
     // remove temp file
-    `rm -rf $prefix-$cleanTarget.tar.bz2`;
+    `rm -rf $prefix-$cleanTarget.bz2`;
   }
 }
 
