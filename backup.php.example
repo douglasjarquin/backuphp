@@ -6,6 +6,9 @@ define('awsSecretKey', '');
 // Backup bucket
 $BACKUP_BUCKET = 'bucket_name';
 
+// Directory name
+$HOSTNAME = 'hostname';
+
 // MySQL variables
 $MYSQL_OPTIONS = '';
 

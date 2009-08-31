@@ -10,7 +10,7 @@ require_once('vendor/s3.php');
 $s3 = new S3(awsAccessKey, awsSecretKey, false);
 
 // Delete old backups on the Grandfather-Father-Son schedule
-deleteBackups($BACKUP_BUCKET);
+deleteBackups($BACKUP_BUCKET, $HOSTNAME);
 
 ////
 // Backup functions
@@ -71,7 +71,7 @@ function backupDBs($hostname, $username, $password, $prefix = '') {
 
 }
 
-function deleteBackups($bucket) {
+function deleteBackups($bucket, $hostname) {
   global $s3;
 
   // Delete the backup from 2 months ago 
@@ -81,7 +81,7 @@ function deleteBackups($bucket) {
   if ((int)date('j',$set_date) === 1) return true;
 
   // Set s3 "dir" to delete
-  $prefix = s3Path('', '', $set_date);
+  $prefix = s3Path($hostname, '', $set_date);
 
   // Find files to delete
   $keys = $s3->getBucket($bucket, $prefix);
